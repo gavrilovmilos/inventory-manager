@@ -10,7 +10,7 @@ Client application consists of 2 modules:
   - Get inventory report for specific ingredient which includes the current stock available
   - Add new ingredient feature
   - Update ingredient stock feature
-- PoC Module - with 2 actions available:
+- PoC Module with 2 actions available:
   - List available recipes in the system
   - Place order functionality
 
@@ -29,4 +29,4 @@ Client application consists of 2 modules:
 
 Demo data contain 2 recipes and 5 ingredients.
 More ingredients can be added via command line application. However, current version of the application
-does not have support for adding new recipes.
+does not have support for adding new recipes or updating existing ones. 
