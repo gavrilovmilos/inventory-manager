@@ -7,18 +7,6 @@ const logger = getLogger('ingredientsRepository');
  * Returns
  * @param kitId
  */
-export const checkKitIdAvailability = async (kitId: string) => {
-  return knex('available_kit_ids').select().where({ kit_id: kitId }).first();
-};
-
-export const addAvailableKitid = async (kit) => {
-  return knex('available_kit_ids').insert(kit);
-};
-
-/**
- * Returns
- * @param kitId
- */
 export const getIngredientById = async (id: number) => {
   return knex('ingredients').select().where({ id }).first();
 };
