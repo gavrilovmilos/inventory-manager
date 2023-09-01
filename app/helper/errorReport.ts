@@ -43,4 +43,6 @@ export const isErrorReport = (err: unknown): boolean => {
   return false;
 };
 export const BAD_REQUEST = new ErrorReport(400, '12.4', 'Bad request');
-export const NOT_FOUND = new ErrorReport(404, '12.4.4', 'Not found');export const INTERNAL_SERVER_ERROR = new ErrorReport(500, '12.5', 'Internal server error');
+export const NOT_FOUND = new ErrorReport(404, '12.4.4', 'Not found');
+export const INTERNAL_SERVER_ERROR = new ErrorReport(500, '12.5', 'Internal server error');
+export const NOT_ENOUGH_STOCK = new ErrorReport(409, '12.4.9', 'Not enough stock');

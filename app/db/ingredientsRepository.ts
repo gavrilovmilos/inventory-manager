@@ -15,7 +15,6 @@ export const getIngredients = async () => {
   return knex('ingredients').select();
 };
 
-
 export const updateIngredient = async (id, ingredient: object) => {
   // @ts-ignore
   ingredient.updated_at = new Date();

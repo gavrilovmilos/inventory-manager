@@ -8,6 +8,7 @@ import { getConfig } from './configManager';
 import { getLogger } from './logger';
 import {ingredientRoutes} from "./routes/ingredientRoutes";
 import {recipeRoutes} from "./routes/recipeRoutes";
+import {orderRoutes} from "./routes/orderRoutes";
 
 const PORT_NUMBER = getConfig().PORT;
 
@@ -24,6 +25,7 @@ app.use(logger.getExpressLogger());
 app.use('/health', healthRoutes);
 app.use('/ingredients', ingredientRoutes);
 app.use('/recipes', recipeRoutes);
+app.use('/orders', orderRoutes);
 
 // ########################################## Setup middlewares ##########################################
 

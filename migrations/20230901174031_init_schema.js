@@ -42,6 +42,7 @@ exports.up = async (knex) => {
     if (!ordersExists) {
         await knex.schema.createTable('orders', function (table) {
             table.increments('id').primary();
+            table.integer('recipe_id', 8);
             table.integer('quantity', 8);
             table.timestamp('created_at').nullable().defaultTo(knex.fn.now());
             table.timestamp('updated_at').nullable().defaultTo(knex.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
