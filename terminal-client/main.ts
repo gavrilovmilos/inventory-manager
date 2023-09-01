@@ -1,6 +1,7 @@
 import { input, select, rawlist, Separator } from '@inquirer/prompts';
 import {createNewIngredient, updateIngredientStock} from "./http/ingredientsClient";
 import {getAllRecipes} from "./http/recipesClient";
+import {createNewOrder} from "./http/ordersClient";
 
 const addIngredients = async () => {
   const name = await input({ message: 'Ingredient name:' });
@@ -82,6 +83,23 @@ const showRecipes = async () => {
   return pocModuleHandler();
 }
 
+const createOrderActionHandler = async () => {
+  const recipeId = await input({ message: 'Please enter recipe identifier:' });
+  const quantity = await input({ message: 'Please enter number of servings:' });
+  try {
+    const response = await createNewOrder(parseInt(recipeId), parseInt(quantity));
+    console.log('Order received. Bon appetit.');
+  } catch (e) {
+    if (e.response && e.response.status === 409) {
+      console.log(`Not enough stock! Please refill the stock or chose different recipe.`);
+    } else {
+      console.log(`An error occurred, please contact your admin.`);
+    }
+  }
+  return pocModuleHandler();
+
+}
+
 const pocModuleHandler = async () => {
   const pocModuleAnswer = await select({
     message: 'Select an action:',
@@ -95,7 +113,6 @@ const pocModuleHandler = async () => {
         name: 'Submit an order',
         value: 2,
         description: 'Submit an order',
-        disabled: true
       },
       new Separator(),
       {
@@ -109,7 +126,7 @@ const pocModuleHandler = async () => {
     case 1:
       return showRecipes();
     case 2:
-      return start();
+      return createOrderActionHandler();
     case 3:
       return start();
     default:
