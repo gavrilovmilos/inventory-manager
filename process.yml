@@ -1,0 +1,6 @@
+apps:
+  - script   : app/app.ts
+    name     : 'nodejs-service-template'
+    instances: 1
+    exec_mode: cluster
+    node_args: "--max_old_space_size=512"

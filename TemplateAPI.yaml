@@ -1,0 +1,488 @@
+openapi: 3.0.0
+info:
+  title: Test Results API
+  description: Test Results API
+  version: "1.0.0"
+tags:
+  - name: Results API
+    description: Operations with test results.
+  - name: Orders API
+    description: Operations with orders.
+  - name: Biomarkers API
+    description: Operations with biomarkers.
+
+paths:
+  /v1/orders:
+    get:
+      tags:
+        - Orders API
+      summary: List/filter orders
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: number
+        - in: query
+          name: offset
+          schema:
+            type: number
+        - in: query
+          name: product
+          schema:
+            type: number
+        - in: query
+          name: createdAt_gt
+          description: createdAt greater than
+          schema:
+            type: number
+        - in: query
+          name: createdAt_lt
+          description: createdAt less than
+          schema:
+            type: number
+
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponses'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+
+    post:
+      tags:
+        - Orders API
+      summary: Create an order
+      requestBody:
+        $ref: '#/components/requestBodies/Order'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+  /v1/test-results:
+    get:
+      tags:
+        - Results API
+      summary: List/filter test result
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: number
+        - in: query
+          name: offset
+          schema:
+            type: number
+        - in: query
+          name: tubeBarcode
+          schema:
+            type: number
+        - in: query
+          name: productCode
+          schema:
+            type: number
+        - in: query
+          name: resultsAt_gt
+          description: resultsAt greater than
+          schema:
+            type: number
+        - in: query
+          name: resultsAt_lt
+          description: resultsAt less than
+          schema:
+            type: number
+        - in: query
+          name: createdAt_gt
+          description: createdAt greater than
+          schema:
+            type: number
+        - in: query
+          name: createdAt_lt
+          description: createdAt less than
+          schema:
+            type: number
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestResults'
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+  /v1/test-results/{test-id}:
+    get:
+      tags:
+        - Results API
+      parameters:
+        - in: path
+          name: test-id
+          schema:
+            type: string
+          required: true
+      summary: Get test result
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestResult'
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+
+  /v1/biomarkers:
+    get:
+      tags:
+        - Biomarkers API
+      summary: List/filter test result
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: number
+        - in: query
+          name: offset
+          schema:
+            type: number
+        - in: query
+          name: type
+          schema:
+            type: string
+        - in: query
+          name: name
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Biomarkers'
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+  /v1/biomarkers/{biomarker-id}:
+    get:
+      tags:
+        - Biomarkers API
+      parameters:
+        - in: path
+          name: biomarker-id
+          schema:
+            type: string
+          required: true
+      summary: Get test result
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Biomarker'
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+  /v1/biomarkers/{biomarker-id}/tests:
+    get:
+      tags:
+        - Biomarkers API
+      parameters:
+        - in: path
+          name: biomarker-id
+          schema:
+            type: string
+          required: true
+      summary: Get tests by biomarker id
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BiomarkerTests'
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+components:
+  schemas:
+    TestResults:
+      type: object
+      properties:
+        limit:
+          type: number
+        offset:
+          type: number
+        total:
+          type: number
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TestResult'
+    TestResult:
+      type: object
+      properties:
+        testId:
+          type: string
+        productCode:
+          type: string
+        tubeBarcode:
+          type: string
+        interpretation:
+          type: string
+        interpretationDescription:
+          type: string
+        createdAt:
+          type: string
+          example: 2021-07-25T10:04:52Z
+        registeredAt:
+          type: string
+          example: 2021-07-25T10:04:52Z
+        resultsAt:
+          type: string
+          example: 2021-07-25T10:04:52Z
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BiomarkerGroupResult'
+    Biomarker:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+        unit:
+          type: string
+        interpretationRule:
+          $ref: '#/components/schemas/InterpretationRule'
+      example:
+        id: 11d2fd69-b815-4afe-a3de-b975a4b1edee
+        name: HDL Cholesterol
+        unit: 'mmol/l'
+        interpretationRule:
+          type: RANGE
+          data:
+            LOW: [ 0,1.3 ]
+            NORMAL: [ 1.3 ]
+    Biomarkers:
+      type: object
+      properties:
+        limit:
+          type: number
+        offset:
+          type: number
+        total:
+          type: number
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Biomarker'
+    BiomarkerTest:
+      type: object
+      properties:
+        biomarkerId:
+          type: string
+        testId:
+          type: string
+        result:
+          type: string
+        interpretation:
+          type: string
+      example:
+        id: 11d2fd69-b815-4afe-a3de-b975a4b1edee
+        name: HDL Cholesterol
+        unit: 'mmol/l'
+        interpretationRule:
+          type: RANGE
+          data:
+            LOW: [ 0,1.3 ]
+            NORMAL: [ 1.3 ]
+    BiomarkerTests:
+      type: object
+      properties:
+        limit:
+          type: number
+        offset:
+          type: number
+        total:
+          type: number
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BiomarkerTest'
+    InterpretationRule:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [RANGE, BOOLEAN]
+        data:
+          type: object
+    BiomarkerGroupResult:
+      type: object
+      properties:
+        groupName:
+          type: string
+        interpretationTitle:
+          type: string
+        interpretationDescription:
+          type: string
+        biomarkerResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/BiomarkerResult'
+    BiomarkerResult:
+      type: object
+      properties:
+        biomarker:
+          $ref: '#/components/schemas/Biomarker'
+        result:
+          type: string
+          example: 2.26
+        interpretation:
+          type: string
+          example: NORMAL
+    OrderSchema:
+      type: object
+      properties:
+        product:
+          type: string
+        quantity:
+          type: number
+        numReturnsLabels:
+          type: number
+        deliveryFname:
+          type: string
+          example: Bob
+        deliveryLname:
+          type: string
+          example: Jones
+        deliveryAddress1:
+          type: string
+          example: My House
+        deliveryCity:
+          type: string
+          example: London
+        deliveryPostcode:
+          type: string
+          example: N1 6HH
+        email:
+          type: string
+          example: GB
+        mobile:
+          type: string
+          example: N1 6HH
+        notes:
+          type: string
+          example: Empty
+    OrderResponse:
+      type: object
+      properties:
+        product:
+          type: string
+        quantity:
+          type: number
+        numReturnsLabels:
+          type: number
+        deliveryFname:
+          type: string
+          example: Bob
+        deliveryLname:
+          type: string
+          example: Jones
+        deliveryAddress1:
+          type: string
+          example: My House
+        deliveryCity:
+          type: string
+          example: London
+        deliveryPostcode:
+          type: string
+          example: N1 6HH
+        email:
+          type: string
+          example: GB
+        mobile:
+          type: string
+          example: N1 6HH
+        notes:
+          type: string
+          example: Empty
+        createdAt:
+          type: string
+          example: 2021-07-25T10:04:52Z
+    OrderResponses:
+      type: object
+      properties:
+        limit:
+          type: number
+        offset:
+          type: number
+        total:
+          type: number
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderResponse'
+    ErrorObject:
+      type: "object"
+      required:
+        - code
+        - message
+      properties:
+        code:
+          description: Unique error code for API error
+          type: string
+          example: 13.17.11
+        message:
+          description: Breif description about API Error
+          type: string
+          example: Bad request
+        details:
+          type: array
+          items:
+            type: object
+  requestBodies:
+    Order:
+      description: Order details
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrderSchema'
+      required: true

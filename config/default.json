@@ -1,0 +1,23 @@
+{
+  "logger": {
+    "streams": {
+      "console": {
+        "level": "debug"
+      }
+    },
+    "express": {
+      "streams": {
+        "console": {
+          "level": "debug",
+          "colorize": true
+        }
+      }
+    }
+  },
+ "db": {
+    "host": "127.0.0.1",
+    "name": "inventory-manager",
+    "user": "root",
+    "pass": "root"
+  }
+}

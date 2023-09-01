@@ -1,0 +1,26 @@
+module.exports = {
+  root: true,
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint', 'jest', 'import', 'node', 'unused-imports', 'prettier'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:jest/recommended',
+    'plugin:import/recommended',
+    'plugin:node/recommended',
+    'plugin:prettier/recommended',
+  ],
+  rules: {
+    'node/no-unsupported-features/es-syntax': 'off',
+    'unused-imports/no-unused-imports': 2,
+    'unused-imports/no-unused-imports-ts': 2,
+    'import/no-unresolved': 'off',
+    'node/no-missing-import': 'off',
+    'node/no-unpublished-require': 'off',
+    'node/no-unpublished-import': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/no-unused-vars': 'error',
+    'no-var': 'error',
+    'prefer-const': 'error',
+  },
+};
