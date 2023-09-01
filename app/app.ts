@@ -6,6 +6,7 @@ import { healthRoutes } from './routes/healthRoutes';
 import { globalErrorHandlingMiddleware } from './middleware/globalErrorHandling';
 import { getConfig } from './configManager';
 import { getLogger } from './logger';
+import {ingredientRoutes} from "./routes/ingredientRoutes";
 
 const PORT_NUMBER = getConfig().PORT;
 
@@ -20,6 +21,7 @@ app.use(logger.getExpressLogger());
 // ########################################## Setup HTTP endpoints ##########################################
 
 app.use('/health', healthRoutes);
+app.use('/ingredients', ingredientRoutes);
 
 // ########################################## Setup middlewares ##########################################
 

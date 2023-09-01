@@ -6,7 +6,7 @@ exports.up = async (knex) => {
     const ingredientsExists = await knex.schema.hasTable('ingredients');
     if (!ingredientsExists) {
         await knex.schema.createTable('ingredients', function (table) {
-            table.increments('id', 8).primary();
+            table.increments('id').primary();
             table.string('name', 64);
             table.string('unit', 16);
             table.double('cost', 64);
@@ -18,7 +18,7 @@ exports.up = async (knex) => {
     const recipesExists = await knex.schema.hasTable('recipes');
     if (!recipesExists) {
         await knex.schema.createTable('recipes', function (table) {
-            table.increments('id', 8).primary();
+            table.increments('id').primary();
             table.string('name', 40).defaultTo(null);
             table.timestamp('created_at').nullable().defaultTo(knex.fn.now());
             table.timestamp('updated_at').nullable().defaultTo(knex.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
@@ -40,7 +40,7 @@ exports.up = async (knex) => {
     const ordersExists = await knex.schema.hasTable('orders');
     if (!ordersExists) {
         await knex.schema.createTable('orders', function (table) {
-            table.string('id', 8).primary();
+            table.increments('id').primary();
             table.integer('quantity', 8);
             table.timestamp('created_at').nullable().defaultTo(knex.fn.now());
             table.timestamp('updated_at').nullable().defaultTo(knex.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
