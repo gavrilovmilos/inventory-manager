@@ -7,6 +7,11 @@ export const createNewIngredient = async (name: string, unit: string, cost: numb
   return response.data;
 }
 
+export const getIngredientFromServer = async (id: number) => {
+  const response = await axios.get(`${SERVER_URL}/${id}`);
+  return response.data;
+}
+
 export const updateIngredientStock = async (id: number, newStock: number) => {
   const response = await axios.patch(`${SERVER_URL}/${id}`, {stock: newStock});
   return response.data;
