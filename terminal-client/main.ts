@@ -1,6 +1,6 @@
 import { input, select, rawlist, Separator } from '@inquirer/prompts';
 import {createNewIngredient, updateIngredientStock} from "./http/ingredientsClient";
-
+import {getAllRecipes} from "./http/recipesClient";
 
 const addIngredients = async () => {
   const name = await input({ message: 'Ingredient name:' });
@@ -40,9 +40,9 @@ const updateStock = async () => {
   return start();
 }
 
-const handleInventoryActions = async () => {
+const inventoryModuleHandler = async () => {
   const inventoryAnswer = await select({
-    message: 'Select a action',
+    message: 'Select an action',
     choices: [
       {
         name: 'Add ingredients',
@@ -74,6 +74,49 @@ const handleInventoryActions = async () => {
   }
 }
 
+const showRecipes = async () => {
+  const recipes = await getAllRecipes();
+  for (let recipe of recipes) {
+    console.log(`${recipe.id} - ${recipe.name}`);
+  }
+  return pocModuleHandler();
+}
+
+const pocModuleHandler = async () => {
+  const pocModuleAnswer = await select({
+    message: 'Select an action:',
+    choices: [
+      {
+        name: 'Get all recipes',
+        value: 1,
+        description: 'Get all recipes list.',
+      },
+      {
+        name: 'Submit an order',
+        value: 2,
+        description: 'Submit an order',
+        disabled: true
+      },
+      new Separator(),
+      {
+        name: 'Back',
+        value: 3,
+        description: 'Go back',
+      },
+    ],
+  });
+  switch (pocModuleAnswer) {
+    case 1:
+      return showRecipes();
+    case 2:
+      return start();
+    case 3:
+      return start();
+    default:
+      break;
+  }
+}
+
 const start = async () => {
   const answer = await select({
     message: 'Please select module',
@@ -88,15 +131,14 @@ const start = async () => {
         name: 'PoS',
         value: 2,
         description: 'Point of sale operations',
-        disabled: true,
       },
       new Separator(),
     ],
   });
   if (answer === 1) {
-    return handleInventoryActions();
+    return inventoryModuleHandler();
   } else {
-    console.log('PoS unavalible')
+    return pocModuleHandler();
   }
 
 }
