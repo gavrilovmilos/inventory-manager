@@ -88,7 +88,7 @@
     "app/**/*.ts",
     "scripts/**/*.ts",
     "app/migrations/*.ts",
-    "config"
+    "config/default.json"
   ],
   "exclude": [
     "node_modules",

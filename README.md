@@ -1,14 +1,16 @@
-### Setup new project based on this template
+### How to run the project?
 
-In order to setup the project execute the following commands in the exact order.
-Let'
+## Database Setup
+- Install and run MySql database server
+- Create inventory_manager database (by default application uses root/root credentials)
 
-```bash
-cp -r nodejs-service-template/  new-service-name/
-cd new-service-name/
-rm -rf .git/
-# Init new repository
-git init
-git add --all
-git commit -m 'Initial commit based on nodejs-service-template'
-```
+## Project setup
+1. Run npm install in the project root folder
+2. Database init: knex migrate:up
+3. Run the server: npx ts-node app/app.ts (By default server will be listening on 5405 port)
+4. Run terminal client application: npx ts-node terminal-client/main.ts
+
+
+
+
+

@@ -49,3 +49,6 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
+
+terminal-client/**/*.js
+*.js.map

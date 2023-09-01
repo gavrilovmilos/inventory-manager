@@ -1,30 +1,45 @@
-import { input, select } from '@inquirer/prompts';
-import {createNewIngredient} from "./http/ingredientsClient";
+import { input, select, rawlist, Separator } from '@inquirer/prompts';
+import {createNewIngredient, updateIngredientStock} from "./http/ingredientsClient";
 
-const start = async () => {
-  const answer = await select({
-    message: 'Select a action',
+
+const addIngredients = async () => {
+  const name = await input({ message: 'Ingredient name:' });
+  const unit = await rawlist({
+    message: 'Ingredient unit:',
     choices: [
-      {
-        name: 'Update inventory',
-        value: 1,
-        description: 'npm is the most popular package manager',
-      },
-      {
-        name: 'PoS',
-        value: 2,
-        description: 'Point of sale operations',
-        disabled: true,
-      },
+      { name: 'kg', value: 'kg' },
+      { name: 'l', value: 'l' },
+      { name: 'quantity', value: 'quantity' },
     ],
   });
-  if (answer === 1) {
-    return handleInventoryActions();
-  } else {
-    console.log('PoS unavalible')
+  const cost = await input({ message: 'Ingredient cost (Eur):' });
+  const stock = await input({ message: 'Ingredient stock:' });
+  try {
+    const addedIngr = await createNewIngredient(name, unit, parseInt(cost), parseFloat(stock));
+    console.log(`New ingredient added: id[${addedIngr.id}] | name[${addedIngr.name}] | unit[${addedIngr.unit}] | cost[${addedIngr.cost}] | stock[${addedIngr.stock}]`);
+  } catch (e) {
+    console.log('An error occurred, server is unresponsive. Please contact your admin.');
   }
-
+  return start();
 }
+
+const updateStock = async () => {
+  const id = await input({ message: 'Please input/scan ingredient id:' });
+  const stock = await input({ message: 'Please add new stock:' });
+
+  try {
+    const updatedIngr = await updateIngredientStock(parseInt(id), parseFloat(stock));
+    console.log(`Stock for ingredient: id[${updatedIngr.id}] / name[${updatedIngr.name}] is updated to [${updatedIngr.stock}]`);
+  } catch (e) {
+    if (e.response && e.response.status === 404) {
+      console.log(`Ingredient with identifier[${id}] does not exist.`);
+      return start();
+    }
+    console.log('An error occurred, server is unresponsive. Please contact your admin.');
+  }
+  return start();
+}
+
 const handleInventoryActions = async () => {
   const inventoryAnswer = await select({
     message: 'Select a action',
@@ -35,25 +50,55 @@ const handleInventoryActions = async () => {
         description: 'Add ingredients desc',
       },
       {
-        name: 'Back',
+        name: 'Update stock',
         value: 2,
+        description: 'Update stock for ingredients',
+      },
+      new Separator(),
+      {
+        name: 'Back',
+        value: 3,
         description: 'Go back',
       },
     ],
   });
-  if (inventoryAnswer === 1) {
-    return addIngredients();
-  } else {
-    return start();
+  switch (inventoryAnswer) {
+    case 1:
+      return addIngredients();
+    case 2:
+      return updateStock();
+    case 3:
+      return start();
+    default:
+      break;
   }
 }
 
-const addIngredients = async () => {
-  const name = await input({ message: 'Ingredient name:' });
-  const unit = await input({ message: 'Ingredient unit:' });
-  const cost = await input({ message: 'Ingredient cost:' });
-  const addedIngr = await createNewIngredient(name, unit, parseInt(cost));
-  console.log(`New ingredient added: id[${addedIngr.id}] / name[${addedIngr.name}] / unit[${addedIngr.unit}] / cost[${addedIngr.cost}]`);
+const start = async () => {
+  const answer = await select({
+    message: 'Please select module',
+    choices: [
+      {
+        name: 'Inventory management',
+        value: 1,
+        description: 'Inventory management operations',
+      },
+      new Separator(),
+      {
+        name: 'PoS',
+        value: 2,
+        description: 'Point of sale operations',
+        disabled: true,
+      },
+      new Separator(),
+    ],
+  });
+  if (answer === 1) {
+    return handleInventoryActions();
+  } else {
+    console.log('PoS unavalible')
+  }
+
 }
 
 start()

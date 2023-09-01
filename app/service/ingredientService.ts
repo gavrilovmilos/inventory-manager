@@ -43,6 +43,18 @@ export const update = async (req: Request, res: Response) => {
   res.status(200).send(await getIngredientById(id));
 };
 
+export const updateStock = async (req: Request, res: Response) => {
+  const updateObject = req.body;
+  const id = parseInt(req.params.id);
+  const newStock = parseFloat(req.body.stock);
+  const updateResponse = await updateIngredient(id, {stock: newStock});
+  if (updateResponse == 0) {
+    throw NOT_FOUND;
+  }
+
+  res.status(200).send(await getIngredientById(id));
+};
+
 export const deleteIng = async (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
   const updateResponse = await deleteIngredient(id);

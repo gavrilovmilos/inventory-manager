@@ -10,6 +10,7 @@ exports.up = async (knex) => {
             table.string('name', 64);
             table.string('unit', 16);
             table.double('cost', 64);
+            table.double('stock', 64);
             table.timestamp('created_at').nullable().defaultTo(knex.fn.now());
             table.timestamp('updated_at').nullable().defaultTo(knex.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
